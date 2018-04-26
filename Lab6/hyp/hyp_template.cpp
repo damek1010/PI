@@ -12,8 +12,8 @@ void dfs(Node** graph, int* components, int n, int i, int component_no) {
     components[i] = component_no;
     Node* p = graph[i];
     while (p) {
-      if (components[p->n] == -1) dfs(graph, components, n, p->n, component_no);
-    	p = p->next;
+	if (components[p->n] == -1) dfs(graph, components, n, p->n, component_no);
+	p = p->next;
     }
 }
 
@@ -26,12 +26,12 @@ int* count_components(Node** graph, int n) {
     int componentsCounter = 0;
     // in loop: find unvisited node, call DFS/BFS
     for (int i = 0; i < n; i++) {
-      	if (components[i] == -1) {
-  	    dfs(graph, components, n, i, componentsCounter);
-  	    componentsCounter++;
-	     }
-     }
-     return components;
+	if (components[i] == -1) {
+	    dfs(graph, components, n, i, componentsCounter);
+	    componentsCounter++;
+	}
+    }
+    return components;
 }
 
 int main() {
@@ -53,7 +53,6 @@ int main() {
         graph[y] = tmp2;
     }
     int* components = count_components(graph, n);
-    for (int i = 0; i < n; i++) cout << components[i] << endl;
     for (int i=0; i<p; i++) {
         int x, y;
         cin >> x;

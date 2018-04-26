@@ -10,55 +10,61 @@ typedef struct neighbours {
     point elems[4];
 } neighbours;
 
-neighbours get_neighbours(int** labyrinth, int n, int m, point* p) {
+neighbours get_neighbours(int** labyrinth, int n, int m, point p) {
     // find (if exist) all neighbours of point p
         // (consider points: one above p, one below p, one on the left site and one on the right site)
     // use defined structures
-    neighbours n;
-    point* q;
-    n.n = -1;
-    n.elems = {NULL, NULL, NULL, NULL}
-    if (p->y - 1 > 0) {
-      if (labyrinth[p->x][p->y - 1]) {
-        q->x = p->x;
-        q->y = p->y - 1;
-        n.elems[0] = q;
-      }
+    neighbours nb;
+    nb.n = 0;
+    if (p.y - 1 >= 0) {
+    	if (labyrinth[p.x][p.y - 1]) {
+	    point q;
+            q.x = p.x;
+	    q.y = p.y - 1;
+	    nb.elems[nb.n] = q;
+	    nb.n++;
+	}
     }
-    if (p->y + 1 < m) {
-      if (labyrinth[p->x][p->y + 1]) {
-        q->x = p->x;
-        q->y = p->y + 1;
-        n.elems[1] = q;
-      }
+    if (p.y + 1 < m) {
+        if (labyrinth[p.x][p.y + 1]) {
+            point q;
+            q.x = p.x;
+            q.y = p.y + 1;
+            nb.elems[nb.n] = q;
+	    nb.n++;
+        }
     }
-    if (p->x - 1 > 0) {
-      if (labyrinth[p->x - 1][p->y]) {
-        q->x = p->x - 1;
-        q->y = p->y;
-        n.elems[2] = q;
-      }
+    if (p.x - 1 >= 0) {
+        if (labyrinth[p.x - 1][p.y]) {
+            point q;
+            q.x = p.x - 1;
+            q.y = p.y;
+            nb.elems[nb.n] = q;
+	    nb.n++;
+        }
     }
-    if (p->y + 1 < n) {
-      if (labyrinth[p->x + 1][p->y]) {
-        q->x = p->x;
-        q->y = p->y;
-        n.elems[3] = q;
-      }
+    if (p.x + 1 < n) {
+        if (labyrinth[p.x + 1][p.y]) {
+            point q;
+            q.x = p.x + 1;
+            q.y = p.y;
+            nb.elems[nb.n] = q;
+	    nb.n++;
+        }
     }
-    return n;
+    return nb;
 }
 
 bool dfs(int** graph, int n, int m, bool** visited, point p, point end) {
     // if p is already at the end - return true
-    if (p == end) return true;
+    if (p.x == end.x && p.y == end.y) return true;
     // mark p visited
-    visited[p->x][p->y] = true;
+    visited[p.x][p.y] = true;
     // call recursively on every unvisited neighbour
-    neighbours n = get_neighbours(graph, n, m, p);
-    for (int i = 0; i < 4; i++) {
-      if (!visited[n.elems[i]->x][n.elems[i]->y])
-        dfs(graph, n, m, visited, n.elems[i], end);
+    neighbours nb = get_neighbours(graph, n, m, p);
+    for (int i = 0; i < nb.n; i++) {
+	if (!visited[nb.elems[i].x][nb.elems[i].y])
+	    if(dfs(graph, n, m, visited, nb.elems[i], end)) return true;
     }
     // if all calls finished fruitlessly - you didn't find exit
     return false;

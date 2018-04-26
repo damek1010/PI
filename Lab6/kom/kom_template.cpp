@@ -21,7 +21,9 @@ bool find_cycle_from(Node** graph, color* visited, int n, int x) {
     // iterate over each neighbour and proceed with DFS (recursively or using stack)
     for (Node* p = graph[x]; p != NULL; p = p->next) {
         // once you found cycle - return immediately
-        if(visited[p->n] != black) if(find_cycle_from(graph, visited, n, p->n)) return true;
+    	if (visited[p->n] != black) {
+	    if (find_cycle_from(graph, visited, n, p->n)) return true;
+	}
     }
     // black means "ok, we finally processed that node" - mark x black
     visited[x] = black;
